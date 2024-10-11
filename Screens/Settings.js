@@ -7,11 +7,7 @@ export default function Settings({ navigation }) {
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
-        <Header
-          title='Settings'
-          rightButtonText='Save'
-          onRightButtonPress={() => console.log('Save pressed')}
-        />
+        <Header title='Settings' />
       </View>
     </SafeAreaView>
   );
