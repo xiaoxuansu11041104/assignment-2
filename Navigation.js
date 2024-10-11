@@ -22,8 +22,16 @@ const Stack = createNativeStackNavigator();
 function ActivitiesStack() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Activities" component={Activities} />
-      <Stack.Screen name="AddActivity" component={AddActivity} />
+        <Stack.Screen 
+        name="Activities" 
+        component={Activities} 
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen 
+        name="AddActivity" 
+        component={AddActivity} 
+        options={{ headerShown: false }}
+      />
     </Stack.Navigator>
   );
 }
@@ -32,8 +40,16 @@ function ActivitiesStack() {
 function DietStack() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Diet" component={Diet} />
-      <Stack.Screen name="AddDiet" component={AddDiet} />
+      <Stack.Screen 
+        name="Diet" 
+        component={Diet} 
+        options={{ headerShown: false   }}
+      />
+      <Stack.Screen 
+        name="AddDiet" 
+        component={AddDiet} 
+        options={{ headerShown: false }}
+      />
     </Stack.Navigator>
   );
 }
