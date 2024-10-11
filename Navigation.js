@@ -1,21 +1,22 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-import { NavigationContainer } from '@react-navigation/native'
-import { createStackNavigator } from '@react-navigation/stack'
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { NavigationContainer } from '@react-navigation/native';
 
-import Activities from './Screens/ActivitiesScreen';
-import AddActivity from './Screens/AddActivityScreen';
-import Diet from './Screens/DietScreen';
-import Settings from './Screens/SettingsScreen';
-import AddDiet from './Screens/AddDietScreen';
+
+import Activities from './Screens/Activities';
+import AddActivity from './Screens/AddActivity';
+import Diet from './Screens/Diet';
+import Settings from './Screens/Settings';
+import AddDiet from './Screens/AddDiet';
 
 // Importing Ionicons for using icons in the bottom tab navigator
 import { Ionicons } from '@expo/vector-icons'; 
 
 // Creating instances of Bottom Tab Navigator and Native Stack Navigator
 const Tab = createBottomTabNavigator();
-const Stack = createStackNavigator();
+const Stack = createNativeStackNavigator();
 
 // Defining the stack for Activities, including the screen to add an activity
 function ActivitiesStack() {
@@ -38,11 +39,49 @@ function DietStack() {
 }
 
 
-export default function Navigation() {
+export default function AppNavigation() {
   return (
-    <View>
-      <Text>Navigation</Text>
-    </View>
+
+    // Defining the bottom tab navigator
+    <Tab.Navigator
+        screenOptions={({ route }) => ({
+        // Defining icons for each tab based on the route name
+        tabBarIcon: ({ focused, color, size }) => {
+            let iconName;
+            // Setting the icon based on the route name
+            if (route.name === 'Activities') {
+            iconName = 'ios-fitness';
+            } else if (route.name === 'Diet') {
+            iconName = 'ios-restaurant';
+            } else if (route.name === 'Settings') {
+            iconName = 'ios-settings';
+            }
+
+            return <Ionicons name={iconName} size={size} color={color} />;
+        },
+        })}
+        tabBarOptions={{
+        activeTintColor: 'tomato',
+        inactiveTintColor: 'gray',
+        }}
+    >
+        <Tab.Screen 
+            name="Activities" 
+            component={ActivitiesStack} 
+            options={{ title: 'Activities' }}
+        />
+        <Tab.Screen 
+            name="Diet" 
+            component={DietStack} 
+            options={{ title: 'Diet' }}
+        />
+        <Tab.Screen 
+            name="Settings" 
+            component={Settings} 
+            options={{ title: 'Settings' }}
+        />
+    </Tab.Navigator>
+
   )
 }
 
