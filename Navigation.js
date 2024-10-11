@@ -43,7 +43,7 @@ function DietStack() {
       <Stack.Screen 
         name="Diet" 
         component={Diet} 
-        options={{ headerShown: false   }}
+        options={{ headerShown: false }}
       />
       <Stack.Screen 
         name="AddDiet" 
@@ -84,17 +84,20 @@ export default function AppNavigation() {
         <Tab.Screen 
             name="Activities" 
             component={ActivitiesStack} 
-            options={{ title: 'Activities' }}
+            options={{ headerShown: false }}
+            
         />
         <Tab.Screen 
             name="Diet" 
-            component={DietStack} 
-            options={{ title: 'Diet' }}
+            component={DietStack}
+            options={{ headerShown: false }} 
+            
         />
         <Tab.Screen 
             name="Settings" 
             component={Settings} 
-            options={{ title: 'Settings' }}
+            options={{ headerShown: false }}
+            
         />
     </Tab.Navigator>
 

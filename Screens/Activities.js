@@ -2,7 +2,7 @@ import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import Header from '../Components/Header'
 
-export default function Activities() {
+export default function Activities({ navigation }) {
   return (
     <View style={styles.container}>
       <Header
