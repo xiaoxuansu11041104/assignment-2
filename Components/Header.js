@@ -1,26 +1,21 @@
-import { StyleSheet, Text, View, Button } from 'react-native'
+import { StyleSheet, Text, View, Pressable } from 'react-native'
 import React from 'react'
 
 
 
 
-export default function Header({title, onRightButtonPress, rightButtonText}) {
-  return (
-    <View style={styles.headerContainer}>
-      <Text style={styles.headerText}>{title}</Text>
-      {rightButtonText && (
-        <View style={styles.buttonContainer}>
-          <Button
-            title={rightButtonText}
-            onPress={onRightButtonPress}
-            color="#1E90FF"
-          />
-        </View>
-      )}
-
-    </View>
-  )
-}
+export default function Header({ title, onRightButtonPress, rightButtonText }) {
+    return (
+      <View style={styles.headerContainer}>
+        <Text style={styles.headerText}>{title}</Text>
+        {rightButtonText && (
+          <Pressable onPress={onRightButtonPress} style={styles.buttonContainer}>
+            <Text style={styles.buttonText}>{rightButtonText}</Text>
+          </Pressable>
+        )}
+      </View>
+    );
+  }
 
 const styles = StyleSheet.create({
     headerContainer: {
@@ -47,6 +42,10 @@ const styles = StyleSheet.create({
         right: 15,
         top: 20,
     },
+    buttonText: {
+        color: 'lightblue',
+        fontSize: 16,
+      },
     
 
 })
