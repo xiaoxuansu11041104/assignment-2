@@ -1,22 +1,29 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import Header from '../Components/Header'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 export default function Activities({ navigation }) {
-  return (
-    <View style={styles.container}>
-      <Header
-        title='Activities'
-        rightButtonText='Add'
-        onRightButtonPress={() => navigation.navigate('AddActivity')}
-      />
-    </View>
-  )
-}
+    return (
+      <SafeAreaView style={styles.safeArea}>
+        <View style={styles.container}>
+          <Header
+            title='Activities'
+            rightButtonText='Add'
+            onRightButtonPress={() => navigation.navigate('AddActivity')}
+          />
+        </View>
+      </SafeAreaView>
+    );
+  }
 
 const styles = StyleSheet.create({
-    container: {
+    safeArea: {
         flex: 1,
         backgroundColor: '#D8BFD8',
+    },
+    container: {
+        flex: 1,
+        
     },
 })

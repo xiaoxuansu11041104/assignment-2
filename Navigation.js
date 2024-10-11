@@ -3,6 +3,9 @@ import React from 'react'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
+import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
+import Fontisto from '@expo/vector-icons/Fontisto';
+
 
 
 import Activities from './Screens/Activities';
@@ -66,11 +69,11 @@ export default function AppNavigation() {
             let iconName;
             // Setting the icon based on the route name
             if (route.name === 'Activities') {
-            iconName = 'ios-fitness';
+                return <FontAwesome5 name="running" size={24} color={focused ? 'tomato' : 'gray'} />
             } else if (route.name === 'Diet') {
-            iconName = 'ios-restaurant';
+            return <Ionicons name="fast-food" size={24} color={focused ? 'tomato' : 'gray'} />
             } else if (route.name === 'Settings') {
-            iconName = 'ios-settings';
+            return <Fontisto name="player-settings" size={24} color={focused ? 'tomato' : 'gray'} />
             }
 
             return <Ionicons name={iconName} size={size} color={color} />;
