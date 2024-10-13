@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, FlatList } from 'react-native'
 import React from 'react'
 import Header from '../Components/Header'
 import { SafeAreaView } from 'react-native-safe-area-context'
