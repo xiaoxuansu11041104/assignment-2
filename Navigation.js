@@ -26,7 +26,7 @@ function ActivitiesStack() {
   return (
     <Stack.Navigator>
         <Stack.Screen 
-        name="Activities" 
+        name="ActivitiesMain" 
         component={Activities} 
         options={{ headerShown: false }}
       />
@@ -44,7 +44,7 @@ function DietStack() {
   return (
     <Stack.Navigator>
       <Stack.Screen 
-        name="Diet" 
+        name="DietMain" 
         component={Diet} 
         options={{ headerShown: false }}
       />

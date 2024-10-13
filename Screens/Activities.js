@@ -2,6 +2,7 @@ import { StyleSheet, Text, View, FlatList } from 'react-native'
 import React from 'react'
 import Header from '../Components/Header'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import ItemsList from '../Components/ItemsList'
 
 export default function Activities({ navigation }) {
     return (
@@ -12,6 +13,7 @@ export default function Activities({ navigation }) {
             rightButtonText='Add'
             onRightButtonPress={() => navigation.navigate('AddActivity')}
           />
+          <ItemsList type="activities" />
         </View>
       </SafeAreaView>
     );

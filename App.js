@@ -4,6 +4,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import AppNavigation from './Navigation';
 import { createContext, useState } from 'react';
+import { DataProvider } from './Context/DataContext';
 
 // Create the context
 export const AppContext = createContext();
@@ -13,12 +14,12 @@ export default function App() {
   const [someState, setSomeState] = useState([]);
 
   return (
-    // Wrap the app with the Provider to share the state
-    <AppContext.Provider value={{ someState, setSomeState }}>
+    // Wrap the entire app with DataProvider to provide the activities and diet data
+    <DataProvider>
       <NavigationContainer>
         <AppNavigation />
       </NavigationContainer>
-    </AppContext.Provider>
+    </DataProvider>
   );
 }
 
