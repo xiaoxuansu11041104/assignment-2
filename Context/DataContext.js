@@ -15,6 +15,11 @@ export function DataProvider({ children }) {
         setActivitiesData([...activitiesData, newActivity]);
     };
 
+    // Function to add a new diet entry
+    const addDietEntry = (newDietEntry) => {
+        setDietData([...dietData, newDietEntry]);
+    };
+
     const contextValue = {
         activitiesData,
         dietData, // Provide the diet data as part of the context
@@ -22,10 +27,7 @@ export function DataProvider({ children }) {
         addDietEntry,  // Provide the function to add new diet entries
     };
 
-    // Function to add a new diet entry
-    const addDietEntry = (newDietEntry) => {
-        setDietData([...dietData, newDietEntry]);
-    };
+
 
     return (
         <DataContext.Provider value={contextValue}>

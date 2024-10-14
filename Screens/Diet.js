@@ -3,6 +3,7 @@ import { View, Text, FlatList, StyleSheet } from 'react-native';
 import Header from '../Components/Header';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { DataContext } from '../Context/DataContext';
+import ItemsList from '../Components/ItemsList'
 
 export default function Diet({ navigation }) {
 
@@ -27,12 +28,7 @@ export default function Diet({ navigation }) {
           onRightButtonPress={() => navigation.navigate('AddDiet')}
         />
         
-        {/* FlatList to display diet entries */}
-        <FlatList
-          data={dietData}
-          keyExtractor={(item) => item.id}
-          renderItem={renderItem}
-        />
+        <ItemsList type="diet" />
       </View>
     </SafeAreaView>
   );
@@ -45,6 +41,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+    
   },
   itemContainer: {
     padding: 15,
@@ -53,6 +50,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#EEE',
     marginVertical: 5,
     borderRadius: 10,
+    width: '90%',
+    marginHorizontal: '5%',
+     
   },
   itemTitle: {
     fontSize: 18,

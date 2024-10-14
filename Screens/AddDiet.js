@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Pressable, Alert, TextInput } from 'react-native'
+import { StyleSheet, Text, View, Pressable, Alert, TextInput, FlatList } from 'react-native'
 import Header from '../Components/Header';
 import React, { useState, useContext } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -136,7 +136,10 @@ const styles = StyleSheet.create({
     
   },
   formContainer: {
+    flex: 1,
     marginBottom: 20,
+    margin: 10,
+    
   },
   label: {
     fontSize: 16,
