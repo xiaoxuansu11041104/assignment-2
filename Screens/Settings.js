@@ -5,6 +5,9 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { ThemeContext } from '../Context/ThemeContext';
 
 export default function Settings({ navigation }) {
+
+  const { theme, toggleTheme } = useContext(ThemeContext);
+
   return (
     <SafeAreaView style={[styles.safeArea, { backgroundColor: theme.backgroundColor }]}>
       <View style={styles.container}>
@@ -30,10 +33,14 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   button: {
+    margin: 20,
     paddingVertical: 12,
     paddingHorizontal: 24,
     backgroundColor: '#4C3F92',  // Button background color
     borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    
   },
   buttonText: {
     fontSize: 18,
