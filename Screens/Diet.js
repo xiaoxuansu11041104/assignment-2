@@ -43,19 +43,5 @@ const styles = StyleSheet.create({
     flex: 1,
     
   },
-  itemContainer: {
-    padding: 15,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
-    backgroundColor: '#EEE',
-    marginVertical: 5,
-    borderRadius: 10,
-    width: '90%',
-    marginHorizontal: '5%',
-     
-  },
-  itemTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
+
 });

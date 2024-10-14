@@ -1,7 +1,8 @@
-import { StyleSheet, Text, View } from 'react-native';
-import React from 'react';
+import { StyleSheet, Text, View, Pressable } from 'react-native';
+import React, { useContext } from 'react';
 import Header from '../Components/Header';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { ThemeContext } from '../Context/ThemeContext';
 
 export default function Settings({ navigation }) {
   return (
