@@ -5,6 +5,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import AppNavigation from './Navigation';
 import { createContext, useState } from 'react';
 import { DataProvider } from './Context/DataContext';
+import { ThemeProvider } from './Context/ThemeContext';  
 
 // Create the context
 export const AppContext = createContext();
@@ -15,11 +16,13 @@ export default function App() {
 
   return (
     // Wrap the entire app with DataProvider to provide the activities and diet data
-    <DataProvider>
-      <NavigationContainer>
-        <AppNavigation />
-      </NavigationContainer>
-    </DataProvider>
+    <ThemeProvider>
+      <DataProvider>
+        <NavigationContainer>
+          <AppNavigation />
+        </NavigationContainer>
+      </DataProvider>
+    </ThemeProvider>
   );
 }
 
