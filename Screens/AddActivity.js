@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, Pressable, Platform, StyleSheet } from 'react-native';
+import React, { useState, useContext } from 'react';
+import { View, Text, TextInput, Pressable, Alert, Platform, StyleSheet } from 'react-native';
 import Header from '../Components/Header';
 import DropDownPicker from 'react-native-dropdown-picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { DataContext } from '../Context/DataContext';  // Import DataContext
+import { Ionicons } from '@expo/vector-icons';
 
 export default function AddActivity({ navigation }) {
   // State management
@@ -24,22 +26,61 @@ export default function AddActivity({ navigation }) {
     { label: 'Hiking', value: 'Hiking' }
   ]);
 
+  // Access context to save the new activity
+  const { addActivity } = useContext(DataContext);
+
   // Handle date change
   const onChangeDate = (event, selectedDate) => {
-    const currentDate = selectedDate || date;
-    setShowDatePicker(false);
-    setDate(currentDate);
+      if (selectedDate) {
+      setDate(selectedDate);  // Update the date state only if a date is selected
+      }
+      setShowDatePicker(false);  // Close the DatePicker after selecting a date
   };
+  
 
   // Toggle DatePicker visibility
   const toggleDatePicker = () => {
     setShowDatePicker(!showDatePicker);
   };
 
+  // Validate form and save activity
+  const saveActivity = () => {
+    // Basic validation
+    if (!activityType) {
+      Alert.alert('Validation Error', 'Please select an activity.');
+      return;
+    }
+    if (!duration || isNaN(duration) || duration <= 0) {
+      Alert.alert('Validation Error', 'Please enter a valid duration.');
+      return;
+    }
+
+    // Check if the activity is special
+    const isSpecial = (activityType === 'Running' || activityType === 'Weights') && duration > 60;
+
+    // Create new activity entry
+    const newActivity = {
+      id: Math.random().toString(),  // Use a random ID for now
+      name: activityType,
+      date: date.toDateString(),
+      duration: parseInt(duration),
+      special: isSpecial,
+    };
+
+    // Add the activity to the context
+    addActivity(newActivity);
+
+    // Navigate back to the previous screen
+    navigation.goBack();
+  };
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
-        <Header title="Add An Activity" />
+        <Header 
+          title="Add An Activity" 
+          showBackButton={true}
+        />
         <View style={styles.formContainer}>
             {/* Activity Dropdown */}
             <Text style={styles.label}>Activity *</Text>
@@ -87,6 +128,16 @@ export default function AddActivity({ navigation }) {
             />
             )}
         </View>
+
+        {/* Buttons */}
+        <View style={styles.buttonContainer}>
+          <Pressable style={styles.button} onPress={() => navigation.goBack()}>
+            <Text style={styles.buttonText}>Cancel</Text>
+          </Pressable>
+          <Pressable style={styles.button} onPress={saveActivity}>
+            <Text style={styles.buttonText}>Save</Text>
+          </Pressable>
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -95,7 +146,7 @@ export default function AddActivity({ navigation }) {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#C4B0E2',  // Light purple background matching the screenshot
+    backgroundColor: '#C4B0E2',  // Light purple background
   },
   container: {
     flex: 1,
@@ -112,7 +163,13 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     marginBottom: 5,
-    color: 'purple',  // White label text
+    color: 'purple',  // Purple label text
+  },
+  headerTitle: {
+    color: 'white',
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginLeft: 10,  // Space between the icon and title
   },
   dropdownContainer: {
     width: '100%',  // Control the dropdown width
@@ -139,5 +196,20 @@ const styles = StyleSheet.create({
   datePicker: {
     backgroundColor: '#fff',
     marginTop: 10,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 20,
+    marginHorizontal: 20,
+  },
+  button: {
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+  },
+  buttonText: {
+    color: '#3C6FD7',  // Blue text color for buttons
+    fontSize: 16,
+    fontWeight: 'bold',
   },
 });
