@@ -9,6 +9,15 @@ export default function Diet({ navigation }) {
   // Access diet data from the DataContext
   const { dietData } = useContext(DataContext);
 
+  // Function to render each item in the FlatList
+  const renderItem = ({ item }) => (
+    <View style={styles.itemContainer}>
+      <Text style={styles.itemTitle}>{item.meal}</Text>
+      <Text>{item.calories} cal</Text>
+      <Text>{item.date}</Text>
+    </View>
+  );
+
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
@@ -16,6 +25,13 @@ export default function Diet({ navigation }) {
           title='Diet'
           rightButtonText='Add'
           onRightButtonPress={() => navigation.navigate('AddDiet')}
+        />
+        
+        {/* FlatList to display diet entries */}
+        <FlatList
+          data={dietData}
+          keyExtractor={(item) => item.id}
+          renderItem={renderItem}
         />
       </View>
     </SafeAreaView>
@@ -29,5 +45,17 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+  },
+  itemContainer: {
+    padding: 15,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
+    backgroundColor: '#EEE',
+    marginVertical: 5,
+    borderRadius: 10,
+  },
+  itemTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
   },
 });

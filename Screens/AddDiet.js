@@ -1,8 +1,8 @@
-import { StyleSheet, Text, View, Pressable, Alert } from 'react-native'
-import React from 'react'
+import { StyleSheet, Text, View, Pressable, Alert, TextInput } from 'react-native'
 import Header from '../Components/Header';
 import React, { useState, useContext } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { DataContext } from '../Context/DataContext';
 
 
 export default function AddDiet({ navigation }) {
