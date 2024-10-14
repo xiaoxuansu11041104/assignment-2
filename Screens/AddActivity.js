@@ -31,17 +31,22 @@ export default function AddActivity({ navigation }) {
 
   // Handle date change
   const onChangeDate = (event, selectedDate) => {
-      if (selectedDate) {
-      setDate(selectedDate);  // Update the date state only if a date is selected
-      }
-      setShowDatePicker(false);  // Close the DatePicker after selecting a date
+    const currentDate = selectedDate || date; // If selectedDate is undefined, keep the current date
+    setDate(currentDate);
+    if (selectedDate) { // Only close the DatePicker if a date has been selected
+        setShowDatePicker(false);
+    }
   };
   
 
   // Toggle DatePicker visibility
   const toggleDatePicker = () => {
-    setShowDatePicker(!showDatePicker);
-  };
+    setShowDatePicker(current => {
+        console.log("Toggling DatePicker from", current, "to", !current);  // This will log the current state and the new state
+        return !current;
+    });
+};
+
 
   // Validate form and save activity
   const saveActivity = () => {
@@ -111,14 +116,15 @@ export default function AddActivity({ navigation }) {
             {/* Date Picker */}
             <Text style={styles.label}>Date *</Text>
             <Pressable onPress={toggleDatePicker}>
-            <TextInput
-                style={styles.input}
-                value={date.toDateString()}  // Show the date in the input
-                editable={false}  // Make the TextInput non-editable, trigger date picker on press
-            />
+              <TextInput
+                  style={styles.input}
+                  value={date.toDateString()}  // Show the date in the input
+                  editable={false}  // Make the TextInput non-editable, trigger date picker on press
+              />
             </Pressable>
 
             {showDatePicker && (
+            console.log("Rendering DateTimePicker with date:", date),
             <DateTimePicker
                 value={date}
                 mode="date"

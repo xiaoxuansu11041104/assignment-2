@@ -3,6 +3,9 @@ import Header from '../Components/Header';
 import React, { useState, useContext } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { DataContext } from '../Context/DataContext';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { Platform } from 'react-native';
+
 
 
 export default function AddDiet({ navigation }) {

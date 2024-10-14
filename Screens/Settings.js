@@ -33,14 +33,15 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   button: {
-    margin: 20,
+    margin: 50,
     paddingVertical: 12,
     paddingHorizontal: 24,
     backgroundColor: '#4C3F92',  // Button background color
     borderRadius: 8,
     alignItems: 'center',
     justifyContent: 'center',
-    
+
+
   },
   buttonText: {
     fontSize: 18,
