@@ -29,4 +29,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  button: {
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    backgroundColor: '#4C3F92',  // Button background color
+    borderRadius: 8,
+  },
+  buttonText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
 });
