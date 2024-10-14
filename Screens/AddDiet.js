@@ -2,6 +2,7 @@ import { StyleSheet, Text, View, Pressable, Alert } from 'react-native'
 import React from 'react'
 import Header from '../Components/Header';
 import React, { useState, useContext } from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 
 export default function AddDiet({ navigation }) {
@@ -60,10 +61,119 @@ export default function AddDiet({ navigation }) {
   };
 
   return (
-    <View>
-      <Text>AddDiet</Text>
-    </View>
+    <SafeAreaView style={styles.safeArea}>
+      {/* Header with Back Button */}
+      <Header 
+        title="Add A Diet Entry" 
+        showBackButton={true}
+        onBackPress={() => navigation.goBack()}
+      />
+
+      <View style={styles.container}>
+        <View style={styles.formContainer}>
+          {/* Description Input */}
+          <Text style={styles.label}>Description *</Text>
+          <TextInput
+            style={styles.inputLarge}
+            value={description}
+            onChangeText={setDescription}
+            placeholder="Enter meal description"
+            multiline={true}  // Allow multiple lines for description
+          />
+
+          {/* Calories Input */}
+          <Text style={styles.label}>Calories *</Text>
+          <TextInput
+            style={styles.input}
+            keyboardType="numeric"
+            value={calories}
+            onChangeText={setCalories}
+            placeholder="Enter calories"
+          />
+
+          {/* Date Picker */}
+          <Text style={styles.label}>Date *</Text>
+          <Pressable onPress={toggleDatePicker}>
+            <TextInput
+              style={styles.input}
+              value={date.toDateString()}  // Show the selected date
+              editable={false}  // Prevent editing the date directly
+            />
+          </Pressable>
+
+          {showDatePicker && (
+            <DateTimePicker
+              value={date}
+              mode="date"
+              display={Platform.OS === 'ios' ? 'inline' : 'default'}
+              onChange={onChangeDate}
+            />
+          )}
+        </View>
+      
+        {/* Buttons */}
+        <View style={styles.buttonContainer}>
+          <Pressable style={styles.button} onPress={() => navigation.goBack()}>
+            <Text style={styles.buttonText}>Cancel</Text>
+          </Pressable>
+          <Pressable style={styles.button} onPress={saveDietEntry}>
+            <Text style={styles.buttonText}>Save</Text>
+          </Pressable>
+        </View>
+      </View>
+    </SafeAreaView>
   )
 }
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: '#D8BFD8',
+  },
+  container: {
+    flex: 1,
+    padding: 20,
+    
+  },
+  formContainer: {
+    marginBottom: 20,
+  },
+  label: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 5,
+    color: '#4C3F92',  // Dark text color
+  },
+  inputLarge: {
+    borderWidth: 1,
+    borderColor: '#A1A1A1',  // Light gray border
+    borderRadius: 5,
+    padding: 12,
+    marginBottom: 20,
+    backgroundColor: '#FFFFFF',
+    height: 100,  // Larger height for multiline input
+    textAlignVertical: 'top',  // Align text to the top in multiline
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: '#A1A1A1',  // Light gray border
+    borderRadius: 5,
+    padding: 12,
+    marginBottom: 20,
+    backgroundColor: '#FFFFFF',
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 20,
+  },
+  button: {
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+  },
+  buttonText: {
+    color: '#3C6FD7',  // Blue text color for buttons
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+})
