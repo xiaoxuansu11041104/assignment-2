@@ -1,63 +1,79 @@
-import { StyleSheet, Text, View, Pressable, Alert, TextInput, FlatList } from 'react-native'
-import Header from '../Components/Header';
 import React, { useState, useContext } from 'react';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { DataContext } from '../Context/DataContext';
+import { View, Text, TextInput, Pressable, Alert, Platform, StyleSheet } from 'react-native';
+import Header from '../Components/Header';
+import DropDownPicker from 'react-native-dropdown-picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { Platform } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { DataContext } from '../Context/DataContext';  // Import DataContext
+import { Ionicons } from '@expo/vector-icons';
 
-
-
-export default function AddDiet({ navigation }) {
-
+export default function AddActivity({ navigation }) {
   // State management
-  const [description, setDescription] = useState('');
-  const [calories, setCalories] = useState('');
+  const [activityType, setActivityType] = useState(null);
   const [date, setDate] = useState(new Date());
+  const [duration, setDuration] = useState('');
   const [showDatePicker, setShowDatePicker] = useState(false);
 
-  // Access context to save the new diet entry
-  const { addDietEntry } = useContext(DataContext);
+  // Dropdown state
+  const [open, setOpen] = useState(false);
+  const [items, setItems] = useState([
+    { label: 'Walking', value: 'Walking' },
+    { label: 'Running', value: 'Running' },
+    { label: 'Swimming', value: 'Swimming' },
+    { label: 'Weights', value: 'Weights' },
+    { label: 'Yoga', value: 'Yoga' },
+    { label: 'Cycling', value: 'Cycling' },
+    { label: 'Hiking', value: 'Hiking' }
+  ]);
+
+  // Access context to save the new activity
+  const { addActivity } = useContext(DataContext);
 
   // Handle date change
   const onChangeDate = (event, selectedDate) => {
-    if (selectedDate) {
-      setDate(selectedDate);  // Update the date state only if a date is selected
+    const currentDate = selectedDate || date; // If selectedDate is undefined, keep the current date
+    setDate(currentDate);
+    if (selectedDate) { // Only close the DatePicker if a date has been selected
+        setShowDatePicker(false);
     }
-    setShowDatePicker(false);  // Close the DatePicker after selecting a date
   };
+  
 
   // Toggle DatePicker visibility
   const toggleDatePicker = () => {
-    setShowDatePicker(!showDatePicker);
-  };
+    setShowDatePicker(current => {
+        console.log("Toggling DatePicker from", current, "to", !current);  // This will log the current state and the new state
+        return !current;
+    });
+};
 
-  // Validate form and save the diet entry
-  const saveDietEntry = () => {
-    // Validation
-    if (!description) {
-      Alert.alert('Validation Error', 'Please enter a description.');
+
+  // Validate form and save activity
+  const saveActivity = () => {
+    // Basic validation
+    if (!activityType) {
+      Alert.alert('Validation Error', 'Please select an activity.');
       return;
     }
-    if (!calories || isNaN(calories) || parseInt(calories) <= 0) {
-      Alert.alert('Validation Error', 'Please enter a valid number of calories.');
+    if (!duration || isNaN(duration) || duration <= 0) {
+      Alert.alert('Validation Error', 'Please enter a valid duration.');
       return;
     }
 
-    // Check if the diet entry is special
-    const isSpecial = parseInt(calories) > 800;
+    // Check if the activity is special
+    const isSpecial = (activityType === 'Running' || activityType === 'Weights') && duration > 60;
 
-    // Create new diet entry
-    const newDietEntry = {
-      id: Math.random().toString(),
-      meal: description,
-      calories: parseInt(calories),
+    // Create new activity entry
+    const newActivity = {
+      id: Math.random().toString(),  // Use a random ID for now
+      name: activityType,
       date: date.toDateString(),
+      duration: parseInt(duration),
       special: isSpecial,
     };
 
-    // Add the diet entry to the context
-    addDietEntry(newDietEntry);
+    // Add the activity to the context
+    addActivity(newActivity);
 
     // Navigate back to the previous screen
     navigation.goBack();
@@ -65,113 +81,133 @@ export default function AddDiet({ navigation }) {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      {/* Header with Back Button */}
-      <Header 
-        title="Add A Diet Entry" 
-        showBackButton={true}
-        onBackPress={() => navigation.goBack()}
-      />
-
       <View style={styles.container}>
+        <Header 
+          title="Add An Activity" 
+          showBackButton={true}
+        />
         <View style={styles.formContainer}>
-          {/* Description Input */}
-          <Text style={styles.label}>Description *</Text>
-          <TextInput
-            style={styles.inputLarge}
-            value={description}
-            onChangeText={setDescription}
-            placeholder="Enter meal description"
-            multiline={true}  // Allow multiple lines for description
-          />
+            {/* Activity Dropdown */}
+            <Text style={styles.label}>Activity *</Text>
+            <View style={styles.dropdownContainer}>  
+            <DropDownPicker
+                open={open}
+                value={activityType}
+                items={items}
+                setOpen={setOpen}
+                setValue={setActivityType}
+                setItems={setItems}
+                placeholder="Select An Activity"
+                style={styles.dropdown}
+                dropDownContainerStyle={styles.dropdownBox}
+            />
+            </View>
 
-          {/* Calories Input */}
-          <Text style={styles.label}>Calories *</Text>
-          <TextInput
+            {/* Duration Input */}
+            <Text style={styles.label}>Duration (min) *</Text>
+            <TextInput
             style={styles.input}
             keyboardType="numeric"
-            value={calories}
-            onChangeText={setCalories}
-            placeholder="Enter calories"
-          />
-
-          {/* Date Picker */}
-          <Text style={styles.label}>Date *</Text>
-          <Pressable onPress={toggleDatePicker}>
-            <TextInput
-              style={styles.input}
-              value={date.toDateString()}  // Show the selected date
-              editable={false}  // Prevent editing the date directly
+            value={duration}
+            onChangeText={setDuration}
+            placeholder="Enter duration in minutes"
             />
-          </Pressable>
 
-          {showDatePicker && (
+            {/* Date Picker */}
+            <Text style={styles.label}>Date *</Text>
+            <Pressable onPress={toggleDatePicker}>
+              <TextInput
+                  style={styles.input}
+                  value={date.toDateString()}  // Show the date in the input
+                  editable={false}  // Make the TextInput non-editable, trigger date picker on press
+              />
+            </Pressable>
+
+            {showDatePicker && (
+            console.log("Rendering DateTimePicker with date:", date),
             <DateTimePicker
-              value={date}
-              mode="date"
-              display={Platform.OS === 'ios' ? 'inline' : 'default'}
-              onChange={onChangeDate}
+                value={date}
+                mode="date"
+                display={Platform.OS === 'ios' ? 'inline' : 'default'}  // Use inline for iOS, default for Android
+                onChange={onChangeDate}
+                style={styles.datePicker}
             />
-          )}
+            )}
         </View>
-      
+
         {/* Buttons */}
         <View style={styles.buttonContainer}>
           <Pressable style={styles.button} onPress={() => navigation.goBack()}>
             <Text style={styles.buttonText}>Cancel</Text>
           </Pressable>
-          <Pressable style={styles.button} onPress={saveDietEntry}>
+          <Pressable style={styles.button} onPress={saveActivity}>
             <Text style={styles.buttonText}>Save</Text>
           </Pressable>
         </View>
       </View>
     </SafeAreaView>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#D8BFD8',
+    backgroundColor: '#C4B0E2',  // Light purple background
   },
   container: {
     flex: 1,
-    padding: 20,
-    
+    paddingTop: 10,
   },
   formContainer: {
     flex: 1,
-    marginBottom: 20,
-    margin: 10,
-    
+    justifyContent: 'flex-start',  // Align items from the top
+    marginBottom: 20,  // Add some margin below the container
+    marginTop: 20,
+    marginHorizontal: 20,  // Add margin on the sides
   },
   label: {
     fontSize: 16,
     fontWeight: 'bold',
     marginBottom: 5,
-    color: '#4C3F92',  // Dark text color
+    color: 'purple',  // Purple label text
   },
-  inputLarge: {
-    borderWidth: 1,
-    borderColor: '#A1A1A1',  // Light gray border
-    borderRadius: 5,
-    padding: 12,
+  headerTitle: {
+    color: 'white',
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginLeft: 10,  // Space between the icon and title
+  },
+  dropdownContainer: {
+    width: '100%',  // Control the dropdown width
     marginBottom: 20,
-    backgroundColor: '#FFFFFF',
-    height: 100,  // Larger height for multiline input
-    textAlignVertical: 'top',  // Align text to the top in multiline
+    zIndex: 10,  // Ensure dropdown appears above other fields
+  },
+  dropdown: {
+    backgroundColor: '#fff',  // White background
+    borderColor: '#A1A1A1',  // Light gray border
+  },
+  dropdownBox: {
+    backgroundColor: '#fff',
+    zIndex: 10,  // Ensure the dropdown box appears on top
   },
   input: {
     borderWidth: 1,
-    borderColor: '#A1A1A1',  // Light gray border
+    borderColor: '#A1A1A1',  // Light gray border color for inputs
     borderRadius: 5,
-    padding: 12,
+    padding: 12,  // Adjust padding for inputs
     marginBottom: 20,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#fff',
+    color: '#4C3F92',  // Dark text color
+  },
+  datePicker: {
+    backgroundColor: '#fff',
+    marginTop: 10,
   },
   buttonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: 20,
+    marginHorizontal: 20,
   },
   button: {
     paddingVertical: 10,
@@ -182,4 +218,4 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
-})
+});
