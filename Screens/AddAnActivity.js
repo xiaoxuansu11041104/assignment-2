@@ -82,12 +82,12 @@ export default function AddAnActivity({ navigation }) {
       <CustomButton
           title="Cancel"
           onPress={() => navigation.goBack()}
-          style={{ backgroundColor: '#d9534f', paddingHorizontal: 20 }} // Customize button appearance
+          style={{ backgroundColor: '#007bff', paddingHorizontal: 20 }} // Customize button appearance
         />
         <CustomButton
           title="Save"
           onPress={saveActivity}
-          style={{ backgroundColor: '#5cb85c', paddingHorizontal: 20 }} // Customize button appearance
+          style={{ backgroundColor: '#007bff', paddingHorizontal: 20 }} // Customize button appearance
         />  
       </ButtonArea>
     </Background>

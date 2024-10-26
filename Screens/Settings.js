@@ -4,6 +4,7 @@ import { useContext } from "react";
 import { ThemeContext } from "../Context/ThemeContext";
 import { themes } from '../StyleHelper';
 import Background from '../Components/Background';
+import CustomButton from '../Components/CustomButton';
 
 export default function Settings() {
   const { theme, setTheme } = useContext(ThemeContext);  // Access the current theme
@@ -16,7 +17,11 @@ export default function Settings() {
   return (
     <Background>
       <View style={styles.container}>
-        <Button title="Toggle" onPress={toggleTheme} />
+        <CustomButton 
+          title="Toggle Theme" 
+          onPress={toggleTheme}
+          style={{ backgroundColor: '#007bff', paddingHorizontal: 20 }} // Customize button appearance
+        />
       </View>
     </Background>
   )
