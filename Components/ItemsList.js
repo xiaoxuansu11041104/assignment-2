@@ -4,15 +4,16 @@ import { DataContext } from "../Context/DataContext";
 import Item from "./Item";
 
 
-export default function ItemList({type}) {
-  const { activities, diet } = useContext(DataContext);
-  const data = type === "activity" ? activities : diet;   // if type is activity, then data is activities, else diet
+export default function ItemList({type, data}) {
+  //const { activities, diet } = useContext(DataContext);
+  //const data = type === "activity" ? activities : diet;   // if type is activity, then data is activities, else diet
 
   return (
-    <FlatList  // renders a list of items
-      data={data}
-      renderItem={({ item }) => <Item item={item} type={type} />} // renders each item
-      contentContainerStyle={styles.scrollViewContainer}  
+    <FlatList
+      data={data} // Use the `data` prop passed down from the parent component
+      renderItem={({ item }) => <Item item={item} type={type} />} // Render each item
+      keyExtractor={(item) => item.id} // Make sure each item has a unique key
+      contentContainerStyle={styles.scrollViewContainer}
     />
   );
 }
