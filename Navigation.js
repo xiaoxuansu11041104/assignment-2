@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button } from 'react-native';
+import { Button, View, Pressable } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
@@ -58,10 +58,14 @@ function MainTabNavigator() {
         component={Activities}
         options={({ navigation }) => ({
           headerRight: () => (
-            <Button
-              onPress={() => navigation.navigate("AddAnActivity")} // Navigate to AddAnActivity screen
-              title="Add"
-            />
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5, paddingRight: 15 }}>
+              <Pressable onPress={() => navigation.navigate("AddAnActivity")}>
+                <Ionicons name="add" size={24} color="white" />
+              </Pressable>
+              <Pressable onPress={() => {/* Additional functionality if needed */}}>
+                <FontAwesome5 name="running" size={20} color="white" />
+              </Pressable>
+            </View>
           ),
         })}
       />
