@@ -1,50 +1,32 @@
-import { StyleSheet, Text, View, Pressable } from 'react-native';
-import React, { useContext } from 'react';
-import Header from '../Components/Header';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { ThemeContext } from '../Context/ThemeContext';
+import { StyleSheet, Text, View, Button } from 'react-native'
+import React from 'react'
+import { useContext } from "react";
+import { ThemeContext } from "../Context/ThemeContext";
+import { themes } from '../StyleHelper';
+import Background from '../Components/Background';
 
-export default function Settings({ navigation }) {
+export default function Settings() {
+  const { theme, setTheme } = useContext(ThemeContext);  // Access the current theme
 
-  const { theme, toggleTheme } = useContext(ThemeContext);
+  // Function to toggle the theme
+  function toggleTheme() {
+    setTheme((previousTheme) => (previousTheme === themes.light ? themes.dark : themes.light));
+  }
 
   return (
-    <SafeAreaView style={[styles.safeArea, { backgroundColor: theme.backgroundColor }]}>
+    <Background>
       <View style={styles.container}>
-        <Header title='Settings' />
-
-        {/* Toggle Theme Button */}
-        <Pressable style={styles.button} onPress={toggleTheme}>
-          <Text style={[styles.buttonText, { color: theme.textColor }]}>
-            Toggle Theme
-          </Text>
-        </Pressable>
+        <Button title="Toggle" onPress={toggleTheme} />
       </View>
-    </SafeAreaView>
-  );
+    </Background>
+  )
 }
 
+
 const styles = StyleSheet.create({
-  safeArea: {
-    flex: 1,
-    backgroundColor: '#D8BFD8', // Same background as other screens
-  },
-  container: {
-    flex: 1,
-  },
-  button: {
-    margin: 50,
-    paddingVertical: 12,
-    paddingHorizontal: 24,
-    backgroundColor: '#4C3F92',  // Button background color
-    borderRadius: 8,
-    alignItems: 'center',
-    justifyContent: 'center',
-
-
-  },
-  buttonText: {
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-});
+    container: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+})

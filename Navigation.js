@@ -1,96 +1,120 @@
-import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
+import { Button } from 'react-native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
-import Fontisto from '@expo/vector-icons/Fontisto';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import Ionicons from '@expo/vector-icons/Ionicons';
+
+// Importing screens for each tab and stack screen
 import Activities from './Screens/Activities';
-import AddActivity from './Screens/AddActivity';
 import Diet from './Screens/Diet';
 import Settings from './Screens/Settings';
-import AddDiet from './Screens/AddDiet';
-import { Ionicons } from '@expo/vector-icons'; // Icons for the bottom tab
+import AddAnActivity from './Screens/AddAnActivity';
+import AddADiet from './Screens/AddADiet';
+import { themes } from './StyleHelper'; // Importing theme colors and styles
 
-const Tab = createBottomTabNavigator();
+// Creating instances of Stack and Tab navigators
 const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
 
-function ActivitiesStack() {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen 
-        name="ActivitiesMain" 
-        component={Activities} 
-        options={{ headerShown: false }} 
-      />
-      <Stack.Screen 
-        name="AddActivity" 
-        component={AddActivity} 
-        options={{ headerShown: false }} 
-      />
-    </Stack.Navigator>
-  );
-}
-
-function DietStack() {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen 
-        name="DietMain" 
-        component={Diet} 
-        options={{ headerShown: false }} 
-      />
-      <Stack.Screen 
-        name="AddDiet" 
-        component={AddDiet} 
-        options={{ headerShown: false }} 
-      />
-    </Stack.Navigator>
-  );
-}
-
-export default function AppNavigation() {
+// Function defining the main bottom tab navigation
+function MainTabNavigator() {
   return (
     <Tab.Navigator
+      initialRouteName="Activities" // Sets Activities as the default tab
       screenOptions={({ route }) => ({
-        // Defining icons for each tab based on the route name
-        tabBarIcon: ({ focused, color, size }) => {
-          let iconName;
-          if (route.name === 'Activities') {
-            return <FontAwesome5 name="running" size={24} color={focused ? 'tomato' : 'gray'} />;
-          } else if (route.name === 'Diet') {
-            return <Ionicons name="fast-food" size={24} color={focused ? 'tomato' : 'gray'} />;
-          } else if (route.name === 'Settings') {
-            return <Fontisto name="player-settings" size={24} color={focused ? 'tomato' : 'gray'} />;
-          }
-          return <Ionicons name={iconName} size={size} color={color} />;
-        },
-        tabBarActiveTintColor: 'tomato',
-        tabBarInactiveTintColor: 'gray',
+        // Define appearance and behavior for the tab bar
+        tabBarActiveTintColor: themes.light.active, // Color for active tab
+        tabBarInactiveTintColor: themes.light.inputbackground, // Color for inactive tab
         tabBarStyle: {
-          backgroundColor: '#fff',
+          backgroundColor: themes.light.primary, // Tab bar background color
+          borderTopWidth: 0, // Remove the top border for a clean look
         },
-        tabBarLabelStyle: {
-          fontSize: 12,
+        // Define appearance for the header in each tab screen
+        headerStyle: {
+          backgroundColor: themes.light.primary, // Header background color
+          elevation: 0, // Removes shadow on Android
+          shadowOpacity: 0, // Removes shadow on iOS
+        },
+        headerTintColor: themes.light.text, // Header text color
+        headerTitleStyle: { fontWeight: "bold" }, // Make header text bold
+
+        // Set up the icon for each tab based on route name
+        tabBarIcon: ({ color, size }) => {
+          if (route.name === "Activities") {
+            return <FontAwesome5 name="walking" size={size} color={color} />;
+          } else if (route.name === "Diet") {
+            return <MaterialIcons name="fastfood" size={size} color={color} />;
+          } else if (route.name === "Settings") {
+            return <Ionicons name="settings-sharp" size={size} color={color} />;
+          }
         },
       })}
     >
-      <Tab.Screen 
-        name="Activities" 
-        component={ActivitiesStack} 
-        options={{ headerShown: false }} 
+      {/* Activities tab with a header button to navigate to AddAnActivity screen */}
+      <Tab.Screen
+        name="Activities"
+        component={Activities}
+        options={({ navigation }) => ({
+          headerRight: () => (
+            <Button
+              onPress={() => navigation.navigate("AddAnActivity")} // Navigate to AddAnActivity screen
+              title="Add"
+            />
+          ),
+        })}
       />
-      <Tab.Screen 
-        name="Diet" 
-        component={DietStack} 
-        options={{ headerShown: false }} 
+      
+      {/* Diet tab with a header button to navigate to AddADiet screen */}
+      <Tab.Screen
+        name="Diet"
+        component={Diet}
+        options={({ navigation }) => ({
+          headerRight: () => (
+            <Button
+              onPress={() => navigation.navigate("AddADiet")} // Navigate to AddADiet screen
+              title="Add"
+            />
+          ),
+        })}
       />
-      <Tab.Screen 
-        name="Settings" 
-        component={Settings} 
-        options={{ headerShown: false }} 
-      />
+
+      {/* Settings tab without a header button */}
+      <Tab.Screen name="Settings" component={Settings} />
     </Tab.Navigator>
   );
 }
 
-const styles = StyleSheet.create({});
+// Main Stack Navigator component that wraps around the bottom tab navigator
+export default function AppNavigation() {
+  return (
+    <Stack.Navigator
+      screenOptions={{
+        headerTintColor: themes.light.text, // Text color for stack headers
+        headerStyle: { backgroundColor: themes.light.primary }, // Background color for stack headers
+      }}
+    >
+      {/* The main entry point - Tab navigator is embedded here */}
+      <Stack.Screen
+        name="HomeTabs" // A placeholder name for the Tab Navigator
+        component={MainTabNavigator} // Embeds the tab navigator as the main screen
+        options={{ headerShown: false }} // Hides the stack header for the main tab navigator
+      />
+
+      {/* Screen for adding a new activity */}
+      <Stack.Screen
+        name="AddAnActivity"
+        component={AddAnActivity}
+        options={{ title: "Add An Activity" }} // Sets a custom title in the header
+      />
+
+      {/* Screen for adding a new diet entry */}
+      <Stack.Screen
+        name="AddADiet"
+        component={AddADiet}
+        options={{ title: "Add A Diet" }} // Sets a custom title in the header
+      />
+    </Stack.Navigator>
+  );
+}

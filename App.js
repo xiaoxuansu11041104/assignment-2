@@ -1,36 +1,22 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
-import AppNavigation from './Navigation';
-import { createContext, useState } from 'react';
+import React, { useState } from 'react';
+import { ThemeContext } from './Context/ThemeContext';
 import { DataProvider } from './Context/DataContext';
-import { ThemeProvider } from './Context/ThemeContext';  
-
-// Create the context
-export const AppContext = createContext();
-
+import { themes } from './StyleHelper';
+import AppNavigation from './Navigation';
 
 export default function App() {
-  const [someState, setSomeState] = useState([]);
+  const [theme, setTheme] = useState(themes.light); // Default to light theme
 
   return (
-    // Wrap the entire app with DataProvider to provide the activities and diet data
-    <ThemeProvider>
+    <ThemeContext.Provider value={{ theme, setTheme }}>  
       <DataProvider>
         <NavigationContainer>
           <AppNavigation />
+          <StatusBar style="auto" />
         </NavigationContainer>
       </DataProvider>
-    </ThemeProvider>
+    </ThemeContext.Provider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
