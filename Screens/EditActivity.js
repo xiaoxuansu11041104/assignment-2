@@ -1,23 +1,22 @@
-import { StyleSheet, View, Button, Alert } from 'react-native';
-import React, { useContext, useState, useEffect } from 'react';
+import { StyleSheet, View, Alert } from 'react-native';
+import React, { useState, useEffect } from 'react';
 import Background from '../Components/Background';
 import PrimaryText from '../Components/PrimaryText';
 import ButtonArea from '../Components/ButtonArea';
 import Input from '../Components/Input';
 import DropDownPicker from 'react-native-dropdown-picker';
 import DatePicker from '../Components/DatePicker';
-import { DataContext } from '../Context/DataContext';
 import CustomButton from '../Components/CustomButton';
-import { database } from '../Components/Firebase/firebaseSetup';
-import { writeToDB } from '../Components/Firebase/firestoreHelper';
-import {collection, onSnapshot} from 'firebase/firestore';
+import { updateDB, deleteFromDB } from '../Components/Firebase/firestoreHelper';
+import { useRoute, useNavigation } from '@react-navigation/native';
 
 // Define collection name in Firestore
 const collectionName = "activities";
 
-export default function AddAnActivity({ navigation }) {
-  // Accessing the addActivity function from DataContext to add a new activity entry
-  const { addActivity } = useContext(DataContext);
+export default function EditActivity() {
+  const route = useRoute();
+  const navigation = useNavigation();
+  const { item } = route.params; // Get the existing item passed via props
 
   // State variables to store user inputs for activity details
   const [duration, setDuration] = useState("");
@@ -36,42 +35,62 @@ export default function AddAnActivity({ navigation }) {
     { label: "Hiking", value: "Hiking" },
   ]);
 
+  // Populate initial state with the existing data
+  useEffect(() => {
+    if (item) {
+      setActivity(item.activity);
+      setDuration(item.duration.toString()); // Convert duration to string for Input
+      setDate(item.date ? new Date(item.date) : null); // Ensure date is a JavaScript Date object
+    }
+  }, [item]);
+
   async function saveActivity() {
     if (!activity || isNaN(duration) || duration <= 0 || !date) {
       Alert.alert("Invalid Input", "Please check your input values", [{ text: "OK" }]);
       return;
-    } else {
-      const newActivity = {
-        activity: activity,
-        duration: duration,
-        date: date,
-        isSpecial: (activity === 'Running' || activity === 'Weights') && duration > 60,
-      };
-
-      // Use `writeToDB` to add the new activity to Firestore
-      await writeToDB(newActivity, collectionName);
-      navigation.goBack();
     }
-  }
-  
 
-  // // Save function to validate input and add a new activity entry
-  // function saveActivity() {
-  //   if (!activity || isNaN(duration) || duration <= 0 || !date) {
-  //     // Alert the user if input values are invalid
-  //     Alert.alert("Invalid Input", "Please check your input values", [{ text: "OK" }]);
-  //     return;
-  //   } else {
-  //     // Add the new activity with isSpecial property based on criteria
-  //     addActivity({
-  //       activity: activity,
-  //       duration: duration,
-  //       date: date,
-  //       isSpecial: (activity === 'Running' || activity === 'Weights') && duration > 60,
-  //     });
-  //     navigation.goBack(); // Navigate back to the previous screen after saving
-  //   }
-  // }
+    const updatedActivity = {
+      activity: activity,
+      duration: parseInt(duration, 10),
+      date: date,
+      isSpecial: (activity === 'Running' || activity === 'Weights') && parseInt(duration, 10) > 60,
+    };
+
+    // Confirm before saving changes
+    Alert.alert(
+      "Important",
+      "Are you sure you want to save these changes?",
+      [
+        {
+          text: "No",
+          onPress: () => console.log("User canceled save"),
+          style: "cancel",
+        },
+        {
+          text: "Yes",
+          onPress: async () => {
+            await updateDB(item.id, updatedActivity, collectionName);
+            Alert.alert("Success", "Activity updated successfully", [{ text: "OK", onPress: () => navigation.goBack() }]);
+          },
+        },
+      ]
+    );
+  }
+
+  async function deleteActivity() {
+    // Confirm before deleting
+    Alert.alert("Confirm Delete", "Are you sure you want to delete this activity?", [
+      { text: "Cancel" },
+      {
+        text: "Delete",
+        onPress: async () => {
+          await deleteFromDB(item.id, collectionName);
+          navigation.goBack(); // Navigate back after deleting
+        }
+      }
+    ]);
+  }
 
   return (
     <Background>
@@ -104,7 +123,7 @@ export default function AddAnActivity({ navigation }) {
 
       {/* Button area to either save the activity or cancel and go back */}
       <ButtonArea>
-      <CustomButton
+        <CustomButton
           title="Cancel"
           onPress={() => navigation.goBack()}
           style={{ backgroundColor: '#31367c', paddingHorizontal: 20 }} // Customize button appearance

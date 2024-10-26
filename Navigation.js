@@ -14,6 +14,8 @@ import AddAnActivity from './Screens/AddAnActivity';
 import AddADiet from './Screens/AddADiet';
 import { themes } from './StyleHelper'; // Importing theme colors and styles
 import HeaderIcons from './Components/HeaderIcons'; // Importing custom header icons
+import EditActivity from './Screens/EditActivity';
+import EditDiet from './Screens/EditDiet';
 
 // Creating instances of Stack and Tab navigators
 const Stack = createNativeStackNavigator();
