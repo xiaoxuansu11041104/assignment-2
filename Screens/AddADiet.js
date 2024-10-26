@@ -6,6 +6,7 @@ import ButtonArea from "../Components/ButtonArea";
 import Input from "../Components/Input";
 import DatePicker from "../Components/DatePicker";
 import { DataContext } from "../Context/DataContext";
+import CustomButton from '../Components/CustomButton';
 
 export default function AddADiet({ navigation }) {
   // Access the addDiet function from the DataContext to add new diet entries
@@ -58,8 +59,16 @@ export default function AddADiet({ navigation }) {
 
         {/* Button Area to either cancel or save the diet entry */}
         <ButtonArea>
-          <Button title="Cancel" onPress={() => navigation.goBack()} />
-          <Button title="Save" onPress={handleSave} />  
+          <CustomButton
+            title="Cancel"
+            onPress={() => navigation.goBack()}
+            style={{ backgroundColor: '#d9534f', paddingHorizontal: 20 }} // Customize button appearance
+          />
+          <CustomButton
+            title="Save"
+            onPress={handleSave}
+            style={{ backgroundColor: '#5cb85c', paddingHorizontal: 20 }} // Customize button appearance
+          />  
         </ButtonArea>
       </Background>
     </ScrollView>
