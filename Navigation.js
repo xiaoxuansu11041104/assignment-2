@@ -13,6 +13,7 @@ import Settings from './Screens/Settings';
 import AddAnActivity from './Screens/AddAnActivity';
 import AddADiet from './Screens/AddADiet';
 import { themes } from './StyleHelper'; // Importing theme colors and styles
+import HeaderIcons from './Components/HeaderIcons'; // Importing custom header icons
 
 // Creating instances of Stack and Tab navigators
 const Stack = createNativeStackNavigator();
@@ -58,14 +59,14 @@ function MainTabNavigator() {
         component={Activities}
         options={({ navigation }) => ({
           headerRight: () => (
-            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 5, paddingRight: 15 }}>
-              <Pressable onPress={() => navigation.navigate("AddAnActivity")}>
-                <Ionicons name="add" size={24} color="white" />
-              </Pressable>
-              <Pressable onPress={() => {/* Additional functionality if needed */}}>
-                <FontAwesome5 name="running" size={20} color="white" />
-              </Pressable>
-            </View>
+            <HeaderIcons
+              icon1Type="Ionicons"
+              icon1Name="add-circle"
+              onPress1={() => navigation.navigate("AddAnActivity")}
+              icon2Type="FontAwesome5"
+              icon2Name="walking" 
+              onPress2={() => {}}
+            />
           ),
         })}
       />
@@ -76,9 +77,13 @@ function MainTabNavigator() {
         component={Diet}
         options={({ navigation }) => ({
           headerRight: () => (
-            <Button
-              onPress={() => navigation.navigate("AddADiet")} // Navigate to AddADiet screen
-              title="Add"
+            <HeaderIcons
+              icon1Type="Ionicons"
+              icon1Name="add-circle"
+              onPress1={() => navigation.navigate("AddADiet")}
+              icon2Type="MaterialIcons"
+              icon2Name="fastfood" 
+              onPress2={() => {}}
             />
           ),
         })}

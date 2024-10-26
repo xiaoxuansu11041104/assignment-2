@@ -22,12 +22,12 @@ const HeaderIcons = ({
   return (
     <View style={{ flexDirection: 'row', alignItems: 'center', paddingRight: 15 }}>
       {Icon1 && icon1Name && onPress1 && (
-        <Pressable onPress={onPress1} style={{ paddingHorizontal: 8 }}>
+        <Pressable onPress={onPress1} style={{ paddingHorizontal: 4 }}>
           <Icon1 name={icon1Name} size={24} color={color} />
         </Pressable>
       )}
       {Icon2 && icon2Name && onPress2 && (
-        <Pressable onPress={onPress2} style={{ paddingHorizontal: 8 }}>
+        <Pressable onPress={onPress2} style={{ paddingHorizontal: 4 }}>
           <Icon2 name={icon2Name} size={24} color={color} />
         </Pressable>
       )}
