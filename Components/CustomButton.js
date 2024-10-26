@@ -1,5 +1,5 @@
 import React from 'react';
-import { Pressable, Text, StyleSheet, Platform } from 'react-native';
+import { Pressable, Text, StyleSheet, View, Platform } from 'react-native';
 
 export default function CustomButton({ title, onPress, style, textStyle }) {
   return (
@@ -7,7 +7,7 @@ export default function CustomButton({ title, onPress, style, textStyle }) {
       onPress={onPress}
       style={({ pressed }) => [
         styles.button,
-        pressed ? styles.pressed : null, // Apply pressed state style
+        pressed ? styles.pressed : null, // Apply pressed state style for iOS
         style, // Allow custom styles to be passed
       ]}
       android_ripple={{ color: '#ccc' }} // Android-specific ripple effect
@@ -37,7 +37,8 @@ const styles = StyleSheet.create({
     }),
   },
   pressed: {
-    opacity: 0.75, // Style for pressed state (slightly dimmer)
+    opacity: Platform.OS === 'ios' ? 0.75 : 1, // Dimmer effect for iOS when pressed
+    backgroundColor: Platform.OS === 'ios' ? '#0056b3' : null, // Darker shade on iOS when pressed
   },
   buttonText: {
     color: '#fff',

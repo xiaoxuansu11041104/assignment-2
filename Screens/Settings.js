@@ -20,7 +20,7 @@ export default function Settings() {
         <CustomButton 
           title="Toggle Theme" 
           onPress={toggleTheme}
-          style={{ backgroundColor: '#007bff', paddingHorizontal: 20 }} // Customize button appearance
+          style={{ backgroundColor: '#31367c', paddingHorizontal: 20 }} // Customize button appearance
         />
       </View>
     </Background>

@@ -62,12 +62,12 @@ export default function AddADiet({ navigation }) {
           <CustomButton
             title="Cancel"
             onPress={() => navigation.goBack()}
-            style={{ backgroundColor: '#007bff', paddingHorizontal: 20 }} // Customize button appearance
+            style={{ backgroundColor: '#31367c', paddingHorizontal: 20 }} // Customize button appearance
           />
           <CustomButton
             title="Save"
             onPress={handleSave}
-            style={{ backgroundColor: '#007bff', paddingHorizontal: 20 }} // Customize button appearance
+            style={{ backgroundColor: '#31367c', paddingHorizontal: 20 }} // Customize button appearance
           />  
         </ButtonArea>
       </Background>
