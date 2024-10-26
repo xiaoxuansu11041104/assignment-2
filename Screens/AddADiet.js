@@ -7,6 +7,11 @@ import Input from "../Components/Input";
 import DatePicker from "../Components/DatePicker";
 import { DataContext } from "../Context/DataContext";
 import CustomButton from '../Components/CustomButton';
+import { writeToDB } from '../Components/Firebase/firestoreHelper';
+
+
+// Define collection name in Firestore
+const collectionName = "diets";
 
 export default function AddADiet({ navigation }) {
   // Access the addDiet function from the DataContext to add new diet entries
@@ -17,22 +22,48 @@ export default function AddADiet({ navigation }) {
   const [calories, setCalories] = useState("");
   const [date, setDate] = useState(null);
 
+
   // Function to validate input and add a new diet entry
-  function handleSave() {
+  async function handleSave() {
     if (!description || isNaN(calories) || calories <= 0 || !date) {
       Alert.alert("Invalid Input", "Please check your input values", [{ text: "OK" }]);
       return;
     } else {
-      // Add the diet entry to context, marking it as special if calories > 800
-      addDiet({
+      // Add the diet entry to Firestore, marking it as special if calories > 800
+      const dietData = {
         description: description,
-        calories: calories,
+        calories: parseInt(calories, 10),
         date: date,
-        isSpecial: calories > 800,
-      });
-      navigation.goBack(); // Navigate back to the previous screen after saving
+        isSpecial: parseInt(calories, 10) > 800,
+      };
+
+      try {
+        await writeToDB(dietData, collectionName);
+        Alert.alert("Success", "Diet entry added successfully", [{ text: "OK" }]);
+        navigation.goBack(); // Navigate back to the previous screen after saving
+      } catch (error) {
+        Alert.alert("Error", "Failed to add diet entry. Please try again.", [{ text: "OK" }]);
+        console.error("Error writing to Firestore: ", error);
+      }
     }
   }
+
+  // // Function to validate input and add a new diet entry
+  // function handleSave() {
+  //   if (!description || isNaN(calories) || calories <= 0 || !date) {
+  //     Alert.alert("Invalid Input", "Please check your input values", [{ text: "OK" }]);
+  //     return;
+  //   } else {
+  //     // Add the diet entry to context, marking it as special if calories > 800
+  //     addDiet({
+  //       description: description,
+  //       calories: calories,
+  //       date: date,
+  //       isSpecial: calories > 800,
+  //     });
+  //     navigation.goBack(); // Navigate back to the previous screen after saving
+  //   }
+  // }
 
   return (
     <ScrollView contentContainerStyle={styles.scrollViewContent}>
