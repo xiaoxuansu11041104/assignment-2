@@ -7,6 +7,7 @@ import Input from '../Components/Input';
 import DropDownPicker from 'react-native-dropdown-picker';
 import DatePicker from '../Components/DatePicker';
 import { DataContext } from '../Context/DataContext';
+import CustomButton from '../Components/CustomButton';
 
 export default function AddAnActivity({ navigation }) {
   // Accessing the addActivity function from DataContext to add a new activity entry
@@ -78,8 +79,16 @@ export default function AddAnActivity({ navigation }) {
 
       {/* Button area to either save the activity or cancel and go back */}
       <ButtonArea>
-        <Button title="Cancel" onPress={() => navigation.goBack()} />
-        <Button title="Save" onPress={saveActivity} />  
+      <CustomButton
+          title="Cancel"
+          onPress={() => navigation.goBack()}
+          style={{ backgroundColor: '#d9534f', paddingHorizontal: 20 }} // Customize button appearance
+        />
+        <CustomButton
+          title="Save"
+          onPress={saveActivity}
+          style={{ backgroundColor: '#5cb85c', paddingHorizontal: 20 }} // Customize button appearance
+        />  
       </ButtonArea>
     </Background>
   );
