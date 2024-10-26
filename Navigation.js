@@ -106,7 +106,7 @@ export default function AppNavigation() {
     >
       {/* The main entry point - Tab navigator is embedded here */}
       <Stack.Screen
-        name="HomeTabs" // A placeholder name for the Tab Navigator
+        name=" " // A placeholder name for the Tab Navigator
         component={MainTabNavigator} // Embeds the tab navigator as the main screen
         options={{ headerShown: false }} // Hides the stack header for the main tab navigator
       />
@@ -123,6 +123,20 @@ export default function AppNavigation() {
         name="AddADiet"
         component={AddADiet}
         options={{ title: "Add A Diet" }} // Sets a custom title in the header
+      />
+
+      {/* Screen for editing an existing activity */}
+      <Stack.Screen
+        name="EditActivity"
+        component={EditActivity}
+        options={{ title: "Edit Activity" }} // Sets a custom title in the header
+      />
+
+      {/* Screen for editing an existing diet entry */}
+      <Stack.Screen
+        name="EditDiet"
+        component={EditDiet}
+        options={{ title: "Edit Diet" }} // Sets a custom title in the header
       />
     </Stack.Navigator>
   );
