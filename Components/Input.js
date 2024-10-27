@@ -23,7 +23,7 @@ export default function Input({
 
 const styles = StyleSheet.create({
   input: {
-    textAlignVertical: Platform.OS === "android" ? "center" : "top", // Adjust text alignment
+    textAlignVertical: Platform.OS === "android" ? "center" : "top", 
     marginBottom: themes.marginstyle.primary,
     borderWidth: themes.borderwidth,
     borderRadius: themes.borderradius,
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     fontSize: themes.fontsize.input,
     color: themes.light.primary,
     paddingHorizontal: themes.paddingstyle.text,
-    paddingVertical: Platform.OS === "android" ? 8 : themes.paddingstyle.text, // Explicit padding for Android
-    height: 45, // Ensure consistent height
+    paddingVertical: Platform.OS === "android" ? 8 : themes.paddingstyle.text, 
+    height: 45, 
   },
 });

@@ -1,10 +1,10 @@
 import { StyleSheet, View, Button, Alert, ScrollView } from "react-native";
 import React, { useContext, useState, useEffect } from "react";
 import Background from "../Components/Background";
-import PrimaryText from "../Components/PrimaryText";
+import PrimaryText from "../Components/MainText";
 import ButtonArea from "../Components/ButtonArea";
 import Input from "../Components/Input";
-import DatePicker from "../Components/DatePicker";
+import DatePicker from "../Components/DateStyle";
 import { DataContext } from "../Context/DataContext";
 import CustomButton from '../Components/CustomButton';
 import { writeToDB } from '../Components/Firebase/firestoreHelper';
