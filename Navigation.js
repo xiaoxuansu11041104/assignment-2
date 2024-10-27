@@ -93,6 +93,24 @@ function MainTabNavigator() {
 
       {/* Settings tab without a header button */}
       <Tab.Screen name="Settings" component={Settings} />
+
+      {/* EditActivity tab with a header button to delete */}
+      <Tab.Screen
+        name="EditActivity"
+        component={EditActivity}
+        options={({ route }) => ({
+          title: "Edit Activity",
+          headerRight: () => (
+            <Pressable
+              onPress={route.params?.deleteActivity}
+              style={{ paddingRight: 15 }}
+            >
+              <FontAwesome5 name="trash" size={24} color="white" />
+            </Pressable>
+          ),
+        })}
+      />
+
     </Tab.Navigator>
   );
 }

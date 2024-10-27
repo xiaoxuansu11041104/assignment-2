@@ -44,6 +44,14 @@ export default function EditActivity() {
     }
   }, [item]);
 
+  // Add useEffect to pass delete function to the header
+  useEffect(() => {
+    if (item) {
+      // Pass delete function to header
+      navigation.setParams({ deleteActivity });
+    }
+  }, [item]);
+
   async function saveActivity() {
     if (!activity || isNaN(duration) || duration <= 0 || !date) {
       Alert.alert("Invalid Input", "Please check your input values", [{ text: "OK" }]);
