@@ -130,6 +130,7 @@ export default function EditDiet() {
         <PrimaryText>Date *</PrimaryText>
         <DatePicker
           value={date}
+          initialValue={item.date ? new Date(item.date) : null}
           onChange={(newDate) => setDate(newDate)}
         />
 

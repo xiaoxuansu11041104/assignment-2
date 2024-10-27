@@ -1,4 +1,4 @@
-import { StyleSheet, View, Alert } from 'react-native';
+import { StyleSheet, View, Alert, Text } from 'react-native';
 import React, { useState, useEffect } from 'react';
 import Background from '../Components/Background';
 import PrimaryText from '../Components/PrimaryText';
@@ -9,6 +9,7 @@ import DatePicker from '../Components/DatePicker';
 import CustomButton from '../Components/CustomButton';
 import { updateDB, deleteFromDB } from '../Components/Firebase/firestoreHelper';
 import { useRoute, useNavigation } from '@react-navigation/native';
+import Checkbox from 'expo-checkbox';
 
 // Define collection name in Firestore
 const collectionName = "activities";
@@ -21,6 +22,7 @@ export default function EditActivity() {
   // State variables to store user inputs for activity details
   const [duration, setDuration] = useState("");
   const [date, setDate] = useState(null);
+  const [isChecked, setIsChecked] = useState(false); // Checkbox state
   
   // Dropdown picker state for selecting activity type
   const [open, setOpen] = useState(false);
@@ -42,6 +44,7 @@ export default function EditActivity() {
       setActivity(item.activity);
       setDuration(item.duration.toString()); // Convert duration to string for Input
       setDate(item.date ? new Date(item.date) : null); // Ensure date is a JavaScript Date object
+      setIsChecked(!item.isSpecial); // Set checkbox state based on `isSpecial` value
     }
   }, [item]);
 
@@ -131,6 +134,21 @@ export default function EditActivity() {
         display="default"
       />
 
+      {/* Show checkbox only if the activity is special */}
+      {item.isSpecial && (
+        <View style={styles.checkboxContainer}>
+          <Checkbox
+            style={styles.checkbox}
+            value={isChecked}
+            onValueChange={setIsChecked}
+            color={isChecked ? '#31367c' : undefined} // Custom color for checked state
+          />
+          <Text style={styles.checkboxText}>
+            This item is marked as special. Select the checkbox if you would like to approve it.
+          </Text>
+        </View>
+      )}
+
       {/* Button area to either save the activity or cancel and go back */}
       <ButtonArea>
         <CustomButton
@@ -159,5 +177,18 @@ const styles = StyleSheet.create({
   dropDownText: {
     fontSize: 18,
     color: '#31367c',
+  },
+  checkboxContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 10,
+  },
+  checkbox: {
+    margin: 8,
+  },
+  checkboxText: {
+    fontSize: 15,
+    color: '#31367c',
+  
   },
 });
