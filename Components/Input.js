@@ -1,7 +1,6 @@
-import { StyleSheet, Text, View, TextInput } from "react-native";
+import { StyleSheet, TextInput, Platform } from "react-native";
 import React from "react";
 import { themes } from "../StyleHelper";
-
 
 export default function Input({
   value,
@@ -24,7 +23,7 @@ export default function Input({
 
 const styles = StyleSheet.create({
   input: {
-    textAlignVertical: "top",
+    textAlignVertical: Platform.OS === "android" ? "center" : "top", // Adjust text alignment
     marginBottom: themes.marginstyle.primary,
     borderWidth: themes.borderwidth,
     borderRadius: themes.borderradius,
@@ -32,6 +31,8 @@ const styles = StyleSheet.create({
     backgroundColor: themes.light.inputbackground,
     fontSize: themes.fontsize.input,
     color: themes.light.primary,
-    padding: themes.paddingstyle.text,
+    paddingHorizontal: themes.paddingstyle.text,
+    paddingVertical: Platform.OS === "android" ? 8 : themes.paddingstyle.text, // Explicit padding for Android
+    height: 45, // Ensure consistent height
   },
 });

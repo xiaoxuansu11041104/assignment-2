@@ -38,6 +38,7 @@ export default function EditActivity() {
   // Populate initial state with the existing data
   useEffect(() => {
     if (item) {
+      // console.log("Original date from item:", item.date);
       setActivity(item.activity);
       setDuration(item.duration.toString()); // Convert duration to string for Input
       setDate(item.date ? new Date(item.date) : null); // Ensure date is a JavaScript Date object
@@ -125,6 +126,7 @@ export default function EditActivity() {
       <PrimaryText>Date *</PrimaryText>
       <DatePicker
         value={date}
+        initialValue={item.date ? new Date(item.date) : null}
         onChange={(newDate) => setDate(newDate)}
         display="default"
       />

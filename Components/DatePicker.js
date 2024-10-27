@@ -3,28 +3,48 @@ import React, { useState, useEffect } from "react";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { themes } from "../StyleHelper";
 
-export default function DatePicker({ value, onChange, style }) {
-  const [show, setShow] = useState(false);
-  const [mode, setMode] = useState("date");
-  const [displayDate, setDisplayDate] = useState(value);  // Initialize with the passed value
+export default function DatePicker({ value, onChange, style, initialValue }) {
+  const [show, setShow] = useState(false);  // Show the calendar
+  const [mode, setMode] = useState("date");  // Set the mode of the calendar
+  const [displayDate, setDisplayDate] = useState(initialValue || value); // Initialize with `initialValue` if provided
+
 
   useEffect(() => {
-    // Whenever `value` changes (e.g., from Firestore data), update `displayDate`
+    // Whenever `value` or `initialValue` changes, update `displayDate`
     if (value) {
       setDisplayDate(value);
     }
-  }, [value]);
+  }, [value, initialValue]);
 
   const onChangeInternal = (event, selectedDate) => {
-    setShow(false);
+    setShow(false);  // Close the calendar
+    // If the user selects a date, set the display date and call the onChange function
     if (selectedDate) {
       setDisplayDate(selectedDate);
       onChange(selectedDate);
     }
   };
 
+  // Show the calendar
   const showDatepicker = () => {
-    setShow(true);
+    const currentDate = new Date();  // Get the current date
+    if (
+      show &&
+      displayDate &&
+      displayDate.toDateString() === currentDate.toDateString()
+    ) {
+      // If calendar is open and current date is already selected, close the calendar and call onChange
+      setShow(false);
+      onChange(currentDate);
+    } else {
+      // Otherwise, show the calendar and set the current date
+      setDisplayDate(currentDate);
+      setShow(true);
+      if (!show) {
+        // Only call onChange if we're opening the calendar
+        onChange(currentDate);
+      }
+    }
   };
 
   const formatDate = (date) => {
@@ -34,18 +54,17 @@ export default function DatePicker({ value, onChange, style }) {
   return (
     <View>
       <TextInput
-        style={[styles.DateInput, style]}
+        style={styles.DateInput}
         value={formatDate(displayDate)}
-        onPressIn={showDatepicker} 
-        editable={false}  // Make sure the user can't manually edit the date input
+        onPressIn={showDatepicker}  // when the user presses the input 
       />
       {show && (
         <DateTimePicker
           testID="dateTimePicker"
-          value={displayDate || new Date()}
+          value={displayDate || new Date()} // either the display date or the current date
           mode={mode}
           is24Hour={true}
-          display={Platform.OS === "ios" ? "inline" : "default"}  // Platform-specific display
+          display="inline"
           onChange={onChangeInternal}
         />
       )}
