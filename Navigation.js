@@ -93,23 +93,7 @@ function MainTabNavigator() {
 
       {/* Settings tab without a header button */}
       <Tab.Screen name="Settings" component={Settings} />
-
-      {/* EditActivity tab with a header button to delete */}
-      <Tab.Screen
-        name="EditActivity"
-        component={EditActivity}
-        options={({ route }) => ({
-          title: "Edit Activity",
-          headerRight: () => (
-            <Pressable
-              onPress={route.params?.deleteActivity}
-              style={{ paddingRight: 15 }}
-            >
-              <FontAwesome5 name="trash" size={24} color="white" />
-            </Pressable>
-          ),
-        })}
-      />
+  
 
     </Tab.Navigator>
   );
@@ -149,14 +133,46 @@ export default function AppNavigation() {
       <Stack.Screen
         name="EditActivity"
         component={EditActivity}
-        options={{ title: "Edit Activity" }} // Sets a custom title in the header
+        options={({ route }) => ({
+          title: "Edit Activity",
+          headerRight: () => (
+            <Ionicons
+              name="trash"
+              size={24}
+              color="white"
+              onPress={() => {
+                // Call delete function from the screen
+                const { deleteActivity } = route.params || {};
+                if (deleteActivity) {
+                  deleteActivity();
+                }
+              }}
+            />
+          ),
+        })}
       />
 
       {/* Screen for editing an existing diet entry */}
       <Stack.Screen
         name="EditDiet"
         component={EditDiet}
-        options={{ title: "Edit Diet" }} // Sets a custom title in the header
+        options={({ route }) => ({
+          title: "Edit Diet",
+          headerRight: () => (
+            <Ionicons
+              name="trash"
+              size={24}
+              color="white"
+              onPress={() => {
+                // Call delete function from the screen
+                const { deleteDiet } = route.params || {};
+                if (deleteDiet) {
+                  deleteDiet();
+                }
+              }}
+            />
+          ),
+        })}
       />
     </Stack.Navigator>
   );
